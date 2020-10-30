@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PokemonsService } from './pokemons.service';
-import { Pokemon } from './models/pokemon';
+import { PokemonsService } from '../../pokemons.service';
+import { Pokemon } from '../../models/pokemon';
 import { Title } from '@angular/platform-browser';
-import { LoginService } from '../login.service';
+import { LoginService } from '../../../login.service';
   
 @Component({
     selector: 'pokemon-form',
-    templateUrl: './app/pokemons/pokemon-form.component.html',
-    styleUrls: ['./app/pokemons/pokemon-form.component.css']
+    templateUrl: './app/pokemons/components/edit-pokemon/pokemon-form.component.html',
+    styleUrls: ['./app/pokemons/components/edit-pokemon/pokemon-form.component.css']
 })
 export class PokemonFormComponent implements OnInit {
   

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Pokemon } from './models/pokemon';
-import { PokemonsService } from './pokemons.service';
+import { Pokemon } from '../../models/pokemon';
+import { PokemonsService } from '../../pokemons.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { LoginService } from '../login.service';
+import { LoginService } from '../../../login.service';
 
 
 @Component({
     selector: 'create-pokemon',
-    templateUrl: './app/pokemons/create-pokemon.component.html'
+    templateUrl: './app/pokemons/components/create-pokemon/create-pokemon.component.html'
 })
 
 export class CreatePokemonComponent implements OnInit {

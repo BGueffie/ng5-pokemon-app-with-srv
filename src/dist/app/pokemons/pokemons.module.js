@@ -9,16 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var forms_1 = require("@angular/forms");
-var edit_pokemon_component_1 = require("./edit-pokemon.component");
-var pokemon_form_component_1 = require("./pokemon-form.component");
-var list_pokemon_component_1 = require("./list-pokemon.component");
-var detail_pokemon_component_1 = require("./detail-pokemon.component");
+var edit_pokemon_component_1 = require("./components/edit-pokemon/edit-pokemon.component");
+var pokemon_form_component_1 = require("./components/edit-pokemon/pokemon-form.component");
+var list_pokemon_component_1 = require("./components/list-pokemon/list-pokemon.component");
+var detail_pokemon_component_1 = require("./components/detail-pokemon/detail-pokemon.component");
 var border_card_directive_1 = require("./border-card.directive");
 var pokemon_type_color_pipe_1 = require("./pokemon-type-color.pipe");
 var pokemons_routing_module_1 = require("./pokemons-routing.module");
 var pokemons_service_1 = require("./pokemons.service");
 var loader_component_1 = require("../loader.component");
-var create_pokemon_component_1 = require("./create-pokemon.component");
+var create_pokemon_component_1 = require("./components/create-pokemon/create-pokemon.component");
 var PokemonsModule = /** @class */ (function () {
     function PokemonsModule() {
     }

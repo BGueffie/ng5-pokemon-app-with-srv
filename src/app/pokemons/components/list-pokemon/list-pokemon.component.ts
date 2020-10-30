@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 
-import { Pokemon } from './models/pokemon';
-import { PokemonsService } from './pokemons.service';
+import { Pokemon } from '../../models/pokemon';
+import { PokemonsService } from '../../pokemons.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { LoginService } from '../login.service';
+import { LoginService } from '../../../login.service';
 import { Observable } from 'rxjs';
   
 @Component({
   selector: 'list-pokemon',
-  templateUrl: `./app/pokemons/list-pokemon.component.html`
+  templateUrl: `./app/pokemons/components/list-pokemon/list-pokemon.component.html`
 })
 export class ListPokemonComponent implements OnInit { 
 
