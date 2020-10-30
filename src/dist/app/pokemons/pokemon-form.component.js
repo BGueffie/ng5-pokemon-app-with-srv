@@ -12,16 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var pokemons_service_1 = require("./pokemons.service");
-var pokemon_1 = require("./pokemon");
 var platform_browser_1 = require("@angular/platform-browser");
+var login_service_1 = require("../login.service");
 var PokemonFormComponent = /** @class */ (function () {
-    function PokemonFormComponent(pokemonsService, router, titleService) {
+    function PokemonFormComponent(route, pokemonsService, router, titleService, loginService) {
+        this.route = route;
         this.pokemonsService = pokemonsService;
         this.router = router;
         this.titleService = titleService;
+        this.loginService = loginService;
     }
     PokemonFormComponent.prototype.ngOnInit = function () {
         // Initialisation de la propriété types
+        if (!this.loginService.isAuthenticated) {
+            this.router.navigate(['/login']);
+        }
         this.titleService.setTitle("Update Pokemon");
         this.types = this.pokemonsService.getPokemonTypes();
     };
@@ -58,17 +63,18 @@ var PokemonFormComponent = /** @class */ (function () {
     // La méthode appelée lorsque le formulaire est soumis.
     PokemonFormComponent.prototype.onSubmit = function () {
         var _this = this;
+        var id = this.route.snapshot.paramMap.get('id');
         console.log("Submit form !");
-        this.pokemonsService.updatePokemon(this.pokemon)
+        this.pokemonsService.updatePokemon(id, this.pokemon)
             .subscribe(function () { return _this.goBack(); });
     };
     PokemonFormComponent.prototype.goBack = function () {
-        var link = ['/pokemon', this.pokemon.id];
+        var link = ['/pokemon', this.pokemon._id];
         this.router.navigate(link);
     };
     __decorate([
         core_1.Input(),
-        __metadata("design:type", pokemon_1.Pokemon)
+        __metadata("design:type", Object)
     ], PokemonFormComponent.prototype, "pokemon", void 0);
     PokemonFormComponent = __decorate([
         core_1.Component({
@@ -76,9 +82,11 @@ var PokemonFormComponent = /** @class */ (function () {
             templateUrl: './app/pokemons/pokemon-form.component.html',
             styleUrls: ['./app/pokemons/pokemon-form.component.css']
         }),
-        __metadata("design:paramtypes", [pokemons_service_1.PokemonsService,
+        __metadata("design:paramtypes", [router_1.ActivatedRoute,
+            pokemons_service_1.PokemonsService,
             router_1.Router,
-            platform_browser_1.Title])
+            platform_browser_1.Title,
+            login_service_1.LoginService])
     ], PokemonFormComponent);
     return PokemonFormComponent;
 }());

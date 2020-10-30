@@ -11,17 +11,15 @@ var router_1 = require("@angular/router");
 var list_pokemon_component_1 = require("./list-pokemon.component");
 var detail_pokemon_component_1 = require("./detail-pokemon.component");
 var edit_pokemon_component_1 = require("./edit-pokemon.component");
-var auth_guard_service_1 = require("../auth-guard.service");
-var add_pokemon_component_1 = require("./add-pokemon.component");
+var create_pokemon_component_1 = require("./create-pokemon.component");
 // les routes du module Pokémon
 var pokemonsRoutes = [
     {
         path: 'pokemon',
-        canActivate: [auth_guard_service_1.AuthGuard],
         children: [
             { path: 'all', component: list_pokemon_component_1.ListPokemonComponent },
-            { path: 'add', component: add_pokemon_component_1.AddPokemonComponent },
-            { path: 'edit/:id', component: edit_pokemon_component_1.EditPokemonComponent, canActivate: [auth_guard_service_1.AuthGuard] },
+            { path: 'add', component: create_pokemon_component_1.CreatePokemonComponent },
+            { path: 'edit/:id', component: edit_pokemon_component_1.EditPokemonComponent },
             { path: ':id', component: detail_pokemon_component_1.DetailPokemonComponent }
         ]
     }

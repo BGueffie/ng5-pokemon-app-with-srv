@@ -20,7 +20,7 @@ var EditPokemonComponent = /** @class */ (function () {
     }
     EditPokemonComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var id = +this.route.snapshot.params['id'];
+        var id = this.route.snapshot.paramMap.get('id');
         this.pokemonsService.getPokemon(id)
             .subscribe(function (pokemon) { return _this.pokemon = pokemon; });
     };

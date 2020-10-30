@@ -10,10 +10,8 @@ import { BorderCardDirective } from './border-card.directive';
 import { PokemonTypeColorPipe } from './pokemon-type-color.pipe';
 import { PokemonRoutingModule } from './pokemons-routing.module';
 import { PokemonsService } from './pokemons.service';
-import { PokemonSearchComponent} from './search-pokemon.component';
 import { LoaderComponent } from '../loader.component';
-import { AuthGuard } from '../auth-guard.service';
-import { AddPokemonComponent } from './add-pokemon.component';
+import { CreatePokemonComponent } from './create-pokemon.component';
 
 @NgModule({
     imports: [
@@ -25,14 +23,13 @@ import { AddPokemonComponent } from './add-pokemon.component';
         ListPokemonComponent,
         DetailPokemonComponent,
         EditPokemonComponent,
-        AddPokemonComponent,
         PokemonFormComponent,
-        PokemonSearchComponent,
+        CreatePokemonComponent,
         LoaderComponent,
         BorderCardDirective,
         PokemonTypeColorPipe
         
     ],
-    providers: [PokemonsService, AuthGuard]
+    providers: [PokemonsService]
 })
 export class PokemonsModule { }

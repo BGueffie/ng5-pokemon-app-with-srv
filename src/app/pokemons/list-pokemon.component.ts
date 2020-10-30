@@ -1,48 +1,53 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 
-import { Pokemon } from './pokemon';
+import { Pokemon } from './models/pokemon';
 import { PokemonsService } from './pokemons.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { POKEMONS } from './mock-pokemons';
+import { LoginService } from '../login.service';
+import { Observable } from 'rxjs';
   
 @Component({
   selector: 'list-pokemon',
-  templateUrl: `./app/pokemons/list-pokemon.component.html`,
+  templateUrl: `./app/pokemons/list-pokemon.component.html`
 })
 export class ListPokemonComponent implements OnInit { 
 
-    private pokemons: Pokemon[];
+    pokemonsList$ : Observable<Pokemon[]>;
     
     constructor(
          private router : Router,
          private pokemonsService: PokemonsService,
-         private titleService : Title) { }
-
-    getPokemons(): void {
-        this.pokemonsService.getPokemons()
-        .subscribe(pokemons => this.pokemons = pokemons);
-    }
+         private titleService : Title,
+         private loginService : LoginService) { }
 
     ngOnInit() {
-        POKEMONS.sort(this.pokemonsService.compare);
-        this.titleService.setTitle("List of Pokemons");
-        this.pokemonsService.getPokemons()
-        .subscribe(pokemons => this.pokemons = pokemons); 
+        this.titleService.setTitle("List of pokemons");
+        this.pokemonsList$ = this.pokemonsService.getPokemons();
+        
     }
 
     
     selectPokemon(pokemon : Pokemon) {
         console.log("Vous avez cliquez sur " + pokemon.name);
-        let link = ['/pokemon', pokemon.id];
+        let link = ['/pokemon', pokemon._id];
         this.router.navigate(link);
     }
-
-    
     
     goToAdd() {
         console.log("Vous allez être redirigé vers la page d'ajout de pokemon");
         this.router.navigate(['/pokemon/add']);
+    }
+    logout() {
+        this.loginService
+            .logout()
+            .subscribe(data => {
+                this.router.navigate(['/pokemon/all'])
+            }, err => console.error(err))
+        
+    }
+    goLogin() {
+        this.router.navigate(['/login']);
     }
 }

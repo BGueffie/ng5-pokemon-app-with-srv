@@ -11,54 +11,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var auth_service_1 = require("./auth.service");
-var platform_browser_1 = require("@angular/platform-browser");
+var login_service_1 = require("./login.service");
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(authService, router, titleService) {
-        this.authService = authService;
+    function LoginComponent(loginService, router) {
+        this.loginService = loginService;
         this.router = router;
-        this.titleService = titleService;
-        this.message = 'Vous êtes déconnecté. (pikachu/pikachu)';
+        this.user = { username: '', password: '' };
     }
-    LoginComponent.prototype.ngOnInit = function () {
-        this.titleService.setTitle("Login");
-    };
-    // Informe l'utilisateur sur son authentfication.
-    LoginComponent.prototype.setMessage = function () {
-        this.message = this.authService.isLoggedIn ?
-            'Vous êtes connecté.' : 'Identifiant ou mot de passe incorrect.';
-    };
-    // Connecte l'utilisateur auprès du Guard
+    LoginComponent.prototype.ngOnInit = function () { };
     LoginComponent.prototype.login = function () {
         var _this = this;
-        this.message = 'Tentative de connexion en cours ...';
-        this.authService.login(this.name, this.password).subscribe(function () {
-            _this.setMessage();
-            if (_this.authService.isLoggedIn) {
-                // Récupère l'URL de redirection depuis le service d'authentification
-                // Si aucune redirection n'a été définis, redirige l'utilisateur vers la liste des pokemons.
-                var redirect = _this.authService.redirectUrl ? _this.authService.redirectUrl : '/pokemon/all';
-                // Redirige l'utilisateur
-                _this.router.navigate([redirect]);
-            }
-            else {
-                _this.password = '';
-            }
-        });
+        console.log('user', this.user);
+        this.loginService
+            .login(this.user)
+            .subscribe(function (data) { return _this.handleSuccess(data); }, function (error) { return _this.handleError(error); });
     };
-    // Déconnecte l'utilisateur
-    LoginComponent.prototype.logout = function () {
-        this.authService.logout();
-        this.setMessage();
+    LoginComponent.prototype.handleSuccess = function (data) {
+        console.log('logged in', data);
+        this.router.navigate(['/pokemon/all']);
+    };
+    LoginComponent.prototype.handleError = function (error) {
+        console.error('NOT logged in', error);
     };
     LoginComponent = __decorate([
         core_1.Component({
-            selector: 'login',
-            template: "\n    <div class='row'>\n    <div class=\"col s12 m4 offset-m4\">\n    <div class=\"card hoverable\">\n      <div class=\"card-content center\">\n        <span class=\"card-title\">Page de connexion</span>\n        <p><em>{{message}}</em></p>\n      </div>\n            <form #loginForm=\"ngForm\">\n          <div>\n                    <label for=\"name\">Name</label>\n            <input type=\"text\" id=\"name\" [(ngModel)]=\"name\" name=\"name\" required>\n          </div>\n          <div>\n            <label for=\"password\">Password</label>\n            <input type=\"password\" id=\"password\" [(ngModel)]=\"password\" name=\"password\" required>\n          </div>\n        </form>\n      <div class=\"card-action center\">\n        <a (click)=\"login()\" class=\"waves-effect waves-light btn\"  *ngIf=\"!authService.isLoggedIn\">Se connecter</a>\n        <a (click)=\"logout()\" *ngIf=\"authService.isLoggedIn\">Se d\u00E9connecter</a>\n      </div>\n    </div>\n    </div>\n    </div>\n  "
+            selector: 'login-component',
+            templateUrl: './app/login.component.html'
         }),
-        __metadata("design:paramtypes", [auth_service_1.AuthService,
-            router_1.Router,
-            platform_browser_1.Title])
+        __metadata("design:paramtypes", [login_service_1.LoginService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
 }());

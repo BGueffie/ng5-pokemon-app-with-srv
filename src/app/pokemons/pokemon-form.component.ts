@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonsService } from './pokemons.service';
-import { Pokemon } from './pokemon';
+import { Pokemon } from './models/pokemon';
 import { Title } from '@angular/platform-browser';
+import { LoginService } from '../login.service';
   
 @Component({
     selector: 'pokemon-form',
@@ -14,12 +15,17 @@ export class PokemonFormComponent implements OnInit {
     @Input() pokemon: Pokemon; // propriété d'entrée du composant
     types: Array<string>; // types disponibles pour un pokémon : 'Eau', 'Feu', etc ...
     constructor(
+        private route: ActivatedRoute,
         private pokemonsService: PokemonsService,
         private router: Router,
-        private titleService : Title) { }
+        private titleService : Title,
+        private loginService: LoginService) { }
   
     ngOnInit() {
         // Initialisation de la propriété types
+        if(!this.loginService.isAuthenticated){
+            this.router.navigate(['/login']);
+        }
         this.titleService.setTitle("Update Pokemon")
         this.types = this.pokemonsService.getPokemonTypes();
     }
@@ -58,13 +64,14 @@ export class PokemonFormComponent implements OnInit {
   
     // La méthode appelée lorsque le formulaire est soumis.
     onSubmit(): void {
+        let id = this.route.snapshot.paramMap.get('id');
         console.log("Submit form !");
-        this.pokemonsService.updatePokemon(this.pokemon)
+        this.pokemonsService.updatePokemon(id,this.pokemon)
         .subscribe(() => this.goBack());
     }
 
     goBack(): void {
-        let link = ['/pokemon', this.pokemon.id];
+        let link = ['/pokemon', this.pokemon._id];
         this.router.navigate(link);
     }
 }

@@ -12,68 +12,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
 var rxjs_1 = require("rxjs");
-var operators_1 = require("rxjs/operators");
 var PokemonsService = /** @class */ (function () {
-    function PokemonsService(http) {
-        this.http = http;
-        this.pokemonsUrl = 'api/pokemons';
+    function PokemonsService(httpClient) {
+        this.httpClient = httpClient;
+        this.baseUrl = 'http://localhost:3100/api/v1/';
+        this.pokemonCreated = new rxjs_1.Subject();
     }
-    PokemonsService.prototype.log = function (log) {
-        console.info(log);
+    PokemonsService.prototype.deletePokemon = function (id) {
+        return this.httpClient.delete(this.baseUrl + "pokemons/" + id);
     };
-    PokemonsService.prototype.handleError = function (operation, result) {
-        if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            console.log(error);
-            console.log(operation + " failed: " + error.message);
-            return rxjs_1.of(result);
-        };
+    /*
+    searchPokemons(term : string): Observable<Pokemon[]> {
+      if(!term.trim()){
+        return of([]);
+      }
+
+      return this.httpClient.get<Pokemon[]>(`${this.baseUrl}/?name=${term}`).pipe(
+        tap(_ => this.log(`found pokemons matching ${term}`)),
+        catchError(this.handleError<Pokemon[]>('searchPokemons', []))
+      )
+    }*/
+    PokemonsService.prototype.dispatchPokemonCreated = function (id) {
+        this.pokemonCreated.next(id);
     };
-    PokemonsService.prototype.deletePokemon = function (pokemon) {
-        var _this = this;
-        var url = this.pokemonsUrl + "/" + pokemon.id;
-        var httpOptions = {
-            headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
-        };
-        return this.http.delete(url, httpOptions).pipe(operators_1.tap(function (_) { return _this.log("deleted pokemon id= " + pokemon.id); }), operators_1.catchError(this.handleError('deletePokemon')));
-    };
-    PokemonsService.prototype.searchPokemons = function (term) {
-        var _this = this;
-        if (!term.trim()) {
-            return rxjs_1.of([]);
-        }
-        return this.http.get(this.pokemonsUrl + "/?name=" + term).pipe(operators_1.tap(function (_) { return _this.log("found pokemons matching " + term); }), operators_1.catchError(this.handleError('searchPokemons', [])));
-    };
-    PokemonsService.prototype.updatePokemon = function (pokemon) {
-        var _this = this;
-        var httpOptions = {
-            headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
-        };
-        return this.http.put(this.pokemonsUrl, pokemon, httpOptions).pipe(operators_1.tap(function (_) { return _this.log("updated pokemon id=" + pokemon.id); }), operators_1.catchError(this.handleError('updatedPokemon')));
+    PokemonsService.prototype.updatePokemon = function (id, pokemon) {
+        return this.httpClient.put(this.baseUrl + "pokemons/" + id, pokemon);
     };
     // Retourne tous les pokémons
     PokemonsService.prototype.getPokemons = function () {
-        var _this = this;
-        return this.http.get(this.pokemonsUrl).pipe(operators_1.tap(function (_) { return _this.log("fetched pokemons"); }), operators_1.catchError(this.handleError("getPokemons", [])));
+        return this.httpClient.get(this.baseUrl + "pokemons");
     };
     // Retourne le pokémon avec l'identifiant passé en paramètre
     PokemonsService.prototype.getPokemon = function (id) {
-        var _this = this;
-        var url = this.pokemonsUrl + "/" + id;
-        return this.http.get(url).pipe(operators_1.tap(function (_) { return _this.log("fetched pokemon id=" + id); }), operators_1.catchError(this.handleError("getPokemon id=" + id)));
+        return this.httpClient.get(this.baseUrl + "pokemons/" + id);
     };
     PokemonsService.prototype.getPokemonTypes = function () {
         return ['Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik', 'Poison', 'Fée', 'Vol', 'Psy', 'Combat', 'Dragon', 'Acier', 'Sol',
             'Ténèbres', 'Glace'];
     };
-    PokemonsService.prototype.compare = function (a, b) {
-        if (a.id < b.id) {
-            return -1;
-        }
-        if (a.id > b.id) {
-            return 1;
-        }
-        return 0;
+    PokemonsService.prototype.createPokemon = function (pokemon) {
+        return this.httpClient.post(this.baseUrl + "pokemons", pokemon);
     };
     PokemonsService = __decorate([
         core_1.Injectable(),

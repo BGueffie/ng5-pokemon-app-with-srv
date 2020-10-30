@@ -74,12 +74,12 @@
                     min = "1"
                     max= "893"
                     required
-                    [(ngModel)]="numberInPokedex"
+                    [(ngModel)]="idOfPokemon"
                     name = "link"
                     #link = "ngModel"/>
-                    <div [hidden]="!(this.outOfPokedex()) && !(this.pokemonExists())"
+                    <div [hidden]="!(this.outOfPokedex())"
                         class="card-panel red accent-1">
-                        Le pokemon existent déja ou le nombre choisi est trop grand / petit (1-893).
+                        Le nombre choisi est trop grand / petit (1-893).
                     </div>
                     <div class="card-panel green accent-1">
                         Choissisez un nombre possible pour afficher le bon pokemon (Nombre max: 893). <a target = "_blank" 
@@ -88,7 +88,7 @@
              </div>
                 <div class ="add-option">
                     <div class="divider"></div>
-                    <div *ngIf="!(this.outOfPokedex()) && !(this.pokemonExists())" class="section center">
+                    <div *ngIf="!(this.outOfPokedex())" class="section center">
                         <button 
                         type="submit"
                         class="waves-effect waves-light btn "

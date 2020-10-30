@@ -13,42 +13,47 @@ var core_1 = require("@angular/core");
 var pokemons_service_1 = require("./pokemons.service");
 var router_1 = require("@angular/router");
 var platform_browser_1 = require("@angular/platform-browser");
-var mock_pokemons_1 = require("./mock-pokemons");
+var login_service_1 = require("../login.service");
 var ListPokemonComponent = /** @class */ (function () {
-    function ListPokemonComponent(router, pokemonsService, titleService) {
+    function ListPokemonComponent(router, pokemonsService, titleService, loginService) {
         this.router = router;
         this.pokemonsService = pokemonsService;
         this.titleService = titleService;
+        this.loginService = loginService;
     }
-    ListPokemonComponent.prototype.getPokemons = function () {
-        var _this = this;
-        this.pokemonsService.getPokemons()
-            .subscribe(function (pokemons) { return _this.pokemons = pokemons; });
-    };
     ListPokemonComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        mock_pokemons_1.POKEMONS.sort(this.pokemonsService.compare);
-        this.titleService.setTitle("List of Pokemons");
-        this.pokemonsService.getPokemons()
-            .subscribe(function (pokemons) { return _this.pokemons = pokemons; });
+        this.titleService.setTitle("List of pokemons");
+        this.pokemonsList$ = this.pokemonsService.getPokemons();
     };
     ListPokemonComponent.prototype.selectPokemon = function (pokemon) {
         console.log("Vous avez cliquez sur " + pokemon.name);
-        var link = ['/pokemon', pokemon.id];
+        var link = ['/pokemon', pokemon._id];
         this.router.navigate(link);
     };
     ListPokemonComponent.prototype.goToAdd = function () {
         console.log("Vous allez être redirigé vers la page d'ajout de pokemon");
         this.router.navigate(['/pokemon/add']);
     };
+    ListPokemonComponent.prototype.logout = function () {
+        var _this = this;
+        this.loginService
+            .logout()
+            .subscribe(function (data) {
+            _this.router.navigate(['/pokemon/all']);
+        }, function (err) { return console.error(err); });
+    };
+    ListPokemonComponent.prototype.goLogin = function () {
+        this.router.navigate(['/login']);
+    };
     ListPokemonComponent = __decorate([
         core_1.Component({
             selector: 'list-pokemon',
-            templateUrl: "./app/pokemons/list-pokemon.component.html",
+            templateUrl: "./app/pokemons/list-pokemon.component.html"
         }),
         __metadata("design:paramtypes", [router_1.Router,
             pokemons_service_1.PokemonsService,
-            platform_browser_1.Title])
+            platform_browser_1.Title,
+            login_service_1.LoginService])
     ], ListPokemonComponent);
     return ListPokemonComponent;
 }());

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Pokemon } from './pokemon';
+import { Pokemon } from './models/pokemon';
 import { PokemonsService } from './pokemons.service';
   
 @Component({
@@ -22,7 +22,7 @@ export class EditPokemonComponent implements OnInit {
     private pokemonsService: PokemonsService) {}
   
   ngOnInit(): void {
-    let id = +this.route.snapshot.params['id'];
+    let id = this.route.snapshot.paramMap.get('id');
     this.pokemonsService.getPokemon(id)
     .subscribe(pokemon => this.pokemon = pokemon); 
   }

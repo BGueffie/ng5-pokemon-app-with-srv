@@ -8,10 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var login_component_1 = require("./login.component");
 var page_not_found_component_1 = require("./page-not-found.component");
 // routes
 var appRoutes = [
     { path: '', redirectTo: 'pokemon/all', pathMatch: 'full' },
+    { path: 'login', component: login_component_1.LoginComponent },
     { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
 ];
 var AppRoutingModule = /** @class */ (function () {

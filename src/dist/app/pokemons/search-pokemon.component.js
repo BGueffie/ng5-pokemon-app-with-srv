@@ -35,7 +35,7 @@ var PokemonSearchComponent = /** @class */ (function () {
         operators_1.switchMap(function (term) { return _this.pokemonsService.searchPokemons(term); }));
     };
     PokemonSearchComponent.prototype.gotoDetail = function (pokemon) {
-        var link = ['/pokemon', pokemon.id];
+        var link = ['/pokemon', pokemon._id];
         this.router.navigate(link);
     };
     PokemonSearchComponent = __decorate([

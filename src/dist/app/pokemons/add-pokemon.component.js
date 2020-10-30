@@ -10,26 +10,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var platform_browser_1 = require("@angular/platform-browser");
 var router_1 = require("@angular/router");
-var mock_pokemons_1 = require("./mock-pokemons");
-var pokemon_1 = require("./pokemon");
 var pokemons_service_1 = require("./pokemons.service");
 var AddPokemonComponent = /** @class */ (function () {
-    function AddPokemonComponent(pokemonsService, router, titleService) {
+    function AddPokemonComponent(fb, pokemonsService, router, titleService) {
+        this.fb = fb;
         this.pokemonsService = pokemonsService;
         this.router = router;
         this.titleService = titleService;
-        this.pokemonTypes = [null];
     }
+    AddPokemonComponent.prototype.createForm = function () {
+        this.creationForm = this.fb.group({
+            pokemonId: '',
+            name: '',
+            hp: '',
+            cp: '',
+            picture: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/' + this.transformNumberInPokedex() + '.png',
+            types: ''
+        });
+    };
     AddPokemonComponent.prototype.ngOnInit = function () {
         // Initialisation de la propriété types
         this.titleService.setTitle("Add Pokemon");
-        this.types = this.pokemonsService.getPokemonTypes();
+        this.createForm();
     };
     // Détermine si le type passé en paramètres appartient ou non au pokémon en cours d'édition.
     AddPokemonComponent.prototype.hasType = function (type) {
-        var index = this.pokemonTypes.indexOf(type);
+        var index = this.pokemon.types.indexOf(type);
         if (index > -1)
             return true;
         return false;
@@ -38,66 +47,67 @@ var AddPokemonComponent = /** @class */ (function () {
     AddPokemonComponent.prototype.selectType = function ($event, type) {
         var checked = $event.target.checked;
         if (checked) {
-            this.pokemonTypes.push(type);
+            this.pokemon.types.push(type);
         }
         else {
-            var index = this.pokemonTypes.indexOf(type);
+            var index = this.pokemon.types.indexOf(type);
             if (index > -1) {
-                this.pokemonTypes.splice(index, 1);
+                this.pokemon.types.splice(index, 1);
             }
         }
     };
     // Valide le nombre de types pour chaque pokémon
     AddPokemonComponent.prototype.isTypesValid = function (type) {
-        if (this.pokemonTypes[0] == null) {
-            this.pokemonTypes.shift();
+        if (this.pokemon.types[0] == null) {
+            this.pokemon.types.shift();
         }
-        if (this.pokemonTypes.length === 1 && this.hasType(type)) {
+        if (this.pokemon.types.length === 1 && this.hasType(type)) {
             return false;
         }
-        if (this.pokemonTypes.length >= 2 && !this.hasType(type)) {
+        if (this.pokemon.types.length >= 2 && !this.hasType(type)) {
             return false;
         }
         return true;
     };
     AddPokemonComponent.prototype.transformNumberInPokedex = function () {
-        if (this.numberInPokedex < 9) {
-            return "00" + this.numberInPokedex;
+        if (this.pokemon.pokemonId < 9) {
+            return "00" + this.pokemon.pokemonId;
         }
-        if (this.numberInPokedex < 99) {
-            return "0" + this.numberInPokedex;
+        else if (this.pokemon.pokemonId < 99) {
+            return "0" + this.pokemon.pokemonId;
         }
-        return "" + this.numberInPokedex;
+        else {
+            return "" + this.pokemon.pokemonId;
+        }
     };
     // La méthode appelée lorsque le formulaire est soumis.
-    AddPokemonComponent.prototype.onSubmit = function () {
-        console.log("Submit form !");
-        this.addPokemonToList(this.pokemonHp, this.pokemonCp, this.pokemonName, "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/" + this.transformNumberInPokedex() + ".png", this.pokemonTypes);
-        this.goBack();
+    AddPokemonComponent.prototype.createPokemon = function (formDirective) {
+        var _this = this;
+        if (this.creationForm.valid) {
+            console.log(this.creationForm.value);
+            this.pokemonsService
+                .createPokemon(this.creationForm.value)
+                .subscribe(function (data) { return _this.handleSucess(data, formDirective); }, function (error) { return _this.handleError(error); });
+        }
+    };
+    AddPokemonComponent.prototype.handleSucess = function (data, formDirective) {
+        console.log('OK blog post created', data);
+        this.creationForm.reset();
+        formDirective.resetForm();
+        this.pokemonsService.dispatchPokemonCreated(data._id);
+    };
+    AddPokemonComponent.prototype.handleError = function (error) {
+        console.error('KO blog post not created', error);
     };
     AddPokemonComponent.prototype.goBack = function () {
         this.router.navigate(['/pokemon/all']);
     };
-    AddPokemonComponent.prototype.addPokemonToList = function (hpCustom, cpCustom, nameCustom, pictureCustom, typesCustom) {
-        mock_pokemons_1.POKEMONS.push({ id: this.numberInPokedex, cp: cpCustom, hp: hpCustom,
-            name: nameCustom, types: typesCustom, picture: pictureCustom, created: new Date() });
-        mock_pokemons_1.POKEMONS.sort(this.pokemonsService.compare);
-    };
     AddPokemonComponent.prototype.outOfPokedex = function () {
-        return (this.numberInPokedex > 893 || this.numberInPokedex < 1);
-    };
-    AddPokemonComponent.prototype.pokemonExists = function () {
-        for (var _i = 0, POKEMONS_1 = mock_pokemons_1.POKEMONS; _i < POKEMONS_1.length; _i++) {
-            var pokemon = POKEMONS_1[_i];
-            if (pokemon.id === this.numberInPokedex) {
-                return true;
-            }
-        }
-        return false;
+        return (this.pokemon.pokemonId > 893 || this.pokemon.pokemonId < 1);
     };
     __decorate([
         core_1.Input(),
-        __metadata("design:type", pokemon_1.Pokemon)
+        __metadata("design:type", Object)
     ], AddPokemonComponent.prototype, "pokemon", void 0);
     AddPokemonComponent = __decorate([
         core_1.Component({
@@ -105,7 +115,8 @@ var AddPokemonComponent = /** @class */ (function () {
             templateUrl: './app/pokemons/add-pokemon.component.html',
             styleUrls: ['./app/pokemons/pokemon-form.component.css']
         }),
-        __metadata("design:paramtypes", [pokemons_service_1.PokemonsService,
+        __metadata("design:paramtypes", [forms_1.FormBuilder,
+            pokemons_service_1.PokemonsService,
             router_1.Router,
             platform_browser_1.Title])
     ], AddPokemonComponent);

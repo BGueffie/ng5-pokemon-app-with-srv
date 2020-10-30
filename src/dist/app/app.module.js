@@ -13,12 +13,11 @@ var app_routing_module_1 = require("./app-routing.module");
 var page_not_found_component_1 = require("./page-not-found.component");
 var pokemons_module_1 = require("./pokemons/pokemons.module");
 var http_1 = require("@angular/common/http");
-var angular_in_memory_web_api_1 = require("angular-in-memory-web-api");
-var in_memory_data_service_1 = require("./in-memory-data.service");
 var forms_1 = require("@angular/forms");
-var login_component_1 = require("./login.component");
-var login_routing_module_1 = require("./login-routing.module");
 var platform_browser_2 = require("@angular/platform-browser");
+var login_service_1 = require("./login.service");
+var login_component_1 = require("./login.component");
+var add_cookie_interceptor_1 = require("./add-cookie.interceptor");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -27,14 +26,14 @@ var AppModule = /** @class */ (function () {
             imports: [platform_browser_1.BrowserModule,
                 http_1.HttpClientModule,
                 forms_1.FormsModule,
-                angular_in_memory_web_api_1.HttpClientInMemoryWebApiModule.forRoot(in_memory_data_service_1.InMemoryDataService, { dataEncapsulation: false }),
                 pokemons_module_1.PokemonsModule,
-                login_routing_module_1.LoginRoutingModule,
+                forms_1.ReactiveFormsModule,
                 app_routing_module_1.AppRoutingModule],
             declarations: [app_component_1.AppComponent,
                 login_component_1.LoginComponent,
                 page_not_found_component_1.PageNotFoundComponent],
-            providers: [platform_browser_2.Title],
+            providers: [platform_browser_2.Title, login_service_1.LoginService,
+                { provide: http_1.HTTP_INTERCEPTORS, useClass: add_cookie_interceptor_1.AddCookieInterceptor, multi: true }],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
