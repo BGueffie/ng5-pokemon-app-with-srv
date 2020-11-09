@@ -2,22 +2,22 @@
     <div class="col s12 m4 offset-m4">
     <div class="card hoverable">
       <div class="card-content center">
-        <span class="card-title">Page de connexion</span>
+        <span class="card-title">Inscrivez vous !</span>
         <p><em>{{errorFromServer}}</em></p>
       </div>
             <form #loginForm="ngForm" >
           <div>
-                    <label for="name">Username</label>
+                    <label for="name">Username (Pas de caractères spéciaux)</label>
             <input type="text" id="username" [(ngModel)]="user.username" pattern="^[a-zA-Z0-9]{1,25}$"name="username" required>
           </div>
           <div>
             <label for="password">Password</label>
-            <input type="password" id="password" [(ngModel)]="user.password" pattern="^^[a-zA-Z0-9&éàçèù!?]{1,25}$"name="password" required>
+            <input type="password" id="password" [(ngModel)]="user.password" pattern="^[a-zA-Z0-9&éàçèù!?]{1,25}$"name="password" required>
           </div>
         </form>
       <div class="card-action center">
-        <button (click)="login()" class="waves-effect waves-light btn"  [disabled]="!loginForm.form.valid">Se connecter</button>
+        <button (click)="register()" class="waves-effect waves-light btn"  [disabled]="!loginForm.form.valid">S'enregistrer</button>
       </div>
     </div>
     </div>
-    </div>
+</div>

@@ -100,10 +100,10 @@ export class CreatePokemonComponent implements OnInit {
     }
 
     transformPokemonId(): string {
-        if (this.idOfPokemon < 9) {
+        if (this.idOfPokemon <= 9) {
             return "00" + this.idOfPokemon;
         }
-        if(this.idOfPokemon < 99 ) {
+        if(this.idOfPokemon <= 99 ) {
             return "0" + this.idOfPokemon;
         }
         return "" + this.idOfPokemon;

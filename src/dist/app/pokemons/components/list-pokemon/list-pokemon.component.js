@@ -45,6 +45,9 @@ var ListPokemonComponent = /** @class */ (function () {
     ListPokemonComponent.prototype.goLogin = function () {
         this.router.navigate(['/login']);
     };
+    ListPokemonComponent.prototype.goRegister = function () {
+        this.router.navigate(['/register']);
+    };
     ListPokemonComponent = __decorate([
         core_1.Component({
             selector: 'list-pokemon',

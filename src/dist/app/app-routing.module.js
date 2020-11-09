@@ -10,9 +10,11 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var login_component_1 = require("./login.component");
 var page_not_found_component_1 = require("./page-not-found.component");
+var register_component_1 = require("./register.component");
 // routes
 var appRoutes = [
     { path: '', redirectTo: 'pokemon/all', pathMatch: 'full' },
+    { path: 'register', component: register_component_1.RegisterComponent },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
 ];

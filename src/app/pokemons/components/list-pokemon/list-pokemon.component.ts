@@ -50,4 +50,8 @@ export class ListPokemonComponent implements OnInit {
     goLogin() {
         this.router.navigate(['/login']);
     }
+
+    goRegister() {
+        this.router.navigate(['/register']);
+    }
 }

@@ -90,10 +90,10 @@ var CreatePokemonComponent = /** @class */ (function () {
         this.router.navigate(link);
     };
     CreatePokemonComponent.prototype.transformPokemonId = function () {
-        if (this.idOfPokemon < 9) {
+        if (this.idOfPokemon <= 9) {
             return "00" + this.idOfPokemon;
         }
-        if (this.idOfPokemon < 99) {
+        if (this.idOfPokemon <= 99) {
             return "0" + this.idOfPokemon;
         }
         return "" + this.idOfPokemon;

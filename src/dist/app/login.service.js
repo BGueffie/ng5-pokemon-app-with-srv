@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_1 = require("@angular/common/http");
 var core_1 = require("@angular/core");
+var rxjs_1 = require("rxjs");
 var LoginService = /** @class */ (function () {
     function LoginService(http) {
         this.http = http;
+        this.userCreated = new rxjs_1.Subject();
         this.isAuthenticated = false;
         this.baseURL = 'http://localhost:3100/auth';
     }
@@ -24,6 +26,12 @@ var LoginService = /** @class */ (function () {
     LoginService.prototype.logout = function () {
         this.isAuthenticated = false;
         return this.http.get(this.baseURL + "/logout");
+    };
+    LoginService.prototype.register = function (user) {
+        return this.http.post(this.baseURL + "/register", user);
+    };
+    LoginService.prototype.dispatchUserCreated = function (id) {
+        this.userCreated.next(id);
     };
     LoginService = __decorate([
         core_1.Injectable({

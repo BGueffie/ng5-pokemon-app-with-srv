@@ -2,8 +2,8 @@
 <h1 class='center'>Pokémons</h1>
 <div class='container'>
 <div class="row">
-
-<button [disabled] ="!this.loginService.isAuthenticated" (click) = "logout()" class="col s12 m6 offset-m3 waves-effect waves-light btn">Log Out</button>
+  <button [disabled] ="this.loginService.isAuthenticated" (click) = "goRegister()" class="col s12 m6 offset-m3 waves-effect waves-light btn">Register</button>
+<button [disabled] ="!this.loginService.isAuthenticated" (click) = "logout()" class="col s12 m6 offset-m3 waves-effect waves-light btn" style="margin-top: 2%;">Log Out</button>
 <button [disabled] ="this.loginService.isAuthenticated" (click) = "goLogin()" class="col s12 m6 offset-m3 waves-effect waves-light btn" style="margin-top: 2%;">Login</button>
 <div *ngFor="let pokemon of pokemonsList$ | async" class="col s6 m4">
   <div class="card horizontal" (click)="selectPokemon(pokemon)" pkmnBorderCard = "blue">

@@ -12,6 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { LoginService } from './login.service';
 import { LoginComponent } from './login.component';
 import { AddCookieInterceptor } from './add-cookie.interceptor';
+import { RegisterComponent } from './register.component';
 
 @NgModule({
   imports: 
@@ -25,6 +26,7 @@ import { AddCookieInterceptor } from './add-cookie.interceptor';
     declarations: 
   [ AppComponent,
     LoginComponent,
+    RegisterComponent,
     PageNotFoundComponent ],
     
     providers: [ Title, LoginService,

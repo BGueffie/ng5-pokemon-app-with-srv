@@ -13,37 +13,37 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var router_1 = require("@angular/router");
 var login_service_1 = require("./login.service");
-var LoginComponent = /** @class */ (function () {
-    function LoginComponent(loginService, router, titleService) {
+var RegisterComponent = /** @class */ (function () {
+    function RegisterComponent(loginService, router, titleService) {
         this.loginService = loginService;
         this.router = router;
         this.titleService = titleService;
         this.user = { username: '', password: '' };
+        this.errorFromServer = '';
     }
-    LoginComponent.prototype.ngOnInit = function () {
-        this.titleService.setTitle('Login');
+    RegisterComponent.prototype.ngOnInit = function () {
+        this.titleService.setTitle('Register');
     };
-    LoginComponent.prototype.login = function () {
+    RegisterComponent.prototype.register = function () {
         var _this = this;
-        this.loginService
-            .login(this.user)
-            .subscribe(function (data) { return _this.handleSuccess(data); }, function (error) { return _this.handleError(error); });
+        this.loginService.register(this.user)
+            .subscribe(function (data) { return _this.handleSuccess(data); }, function (err) { return _this.handleError(err); });
     };
-    LoginComponent.prototype.handleSuccess = function (data) {
+    RegisterComponent.prototype.handleSuccess = function (data) {
         this.loginService.dispatchUserCreated(data._id);
         this.router.navigate(['/pokemon/all']);
     };
-    LoginComponent.prototype.handleError = function (error) {
+    RegisterComponent.prototype.handleError = function (error) {
         this.errorFromServer = "Error " + error.status + " - Wrong Password or Username";
     };
-    LoginComponent = __decorate([
+    RegisterComponent = __decorate([
         core_1.Component({
-            selector: 'login-component',
-            templateUrl: './app/login.component.html'
+            selector: 'register-component',
+            templateUrl: './app/register.component.html'
         }),
         __metadata("design:paramtypes", [login_service_1.LoginService, router_1.Router, platform_browser_1.Title])
-    ], LoginComponent);
-    return LoginComponent;
+    ], RegisterComponent);
+    return RegisterComponent;
 }());
-exports.LoginComponent = LoginComponent;
-//# sourceMappingURL=login.component.js.map
+exports.RegisterComponent = RegisterComponent;
+//# sourceMappingURL=register.component.js.map

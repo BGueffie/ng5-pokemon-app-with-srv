@@ -18,6 +18,7 @@ var platform_browser_2 = require("@angular/platform-browser");
 var login_service_1 = require("./login.service");
 var login_component_1 = require("./login.component");
 var add_cookie_interceptor_1 = require("./add-cookie.interceptor");
+var register_component_1 = require("./register.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -31,6 +32,7 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule],
             declarations: [app_component_1.AppComponent,
                 login_component_1.LoginComponent,
+                register_component_1.RegisterComponent,
                 page_not_found_component_1.PageNotFoundComponent],
             providers: [platform_browser_2.Title, login_service_1.LoginService,
                 { provide: http_1.HTTP_INTERCEPTORS, useClass: add_cookie_interceptor_1.AddCookieInterceptor, multi: true }],

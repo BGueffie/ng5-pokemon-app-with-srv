@@ -5,29 +5,29 @@ import { LoginService } from './login.service';
 import { User } from './models/user';
 
 @Component({
-    selector: 'login-component',
-    templateUrl: './app/login.component.html'
+    selector: 'register-component',
+    templateUrl: './app/register.component.html'
 })
 
-export class LoginComponent implements OnInit {
-    user : User= { username: '', password: ''};
-    errorFromServer : string;
+export class RegisterComponent implements OnInit {
+    user : User = {username : '', password : ''};
+    errorFromServer : string = '';
 
     constructor(private loginService: LoginService, private router: Router, private titleService : Title) { }
 
-    ngOnInit() {
-        this.titleService.setTitle('Login');
-     }
+    ngOnInit() { 
+        this.titleService.setTitle('Register');
+    }
 
-    login() {
-        this.loginService
-          .login(this.user)
-          .subscribe(data => this.handleSuccess(data), error => this.handleError(error));
-        }
-          
-    handleSuccess(data: User) {
+    register() {
+        this.loginService.register(this.user)
+                         .subscribe(data => this.handleSuccess(data), err => this.handleError(err));
+    }
+
+    handleSuccess(data : User) {
         this.loginService.dispatchUserCreated(data._id);
         this.router.navigate(['/pokemon/all']);
+        
     }
     
     handleError(error: any) {
