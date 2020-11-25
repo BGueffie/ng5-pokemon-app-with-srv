@@ -1,0 +1,30 @@
+
+<h1 class='center'>Pokémons</h1>
+<div class='container'>
+<div class="row">
+  <button [disabled] ="this.loginService.isAuthenticated" (click) = "goRegister()" class="col s12 m6 offset-m3 waves-effect waves-light btn">Register</button>
+<button [disabled] ="!this.loginService.isAuthenticated" (click) = "logout()" class="col s12 m6 offset-m3 waves-effect waves-light btn" style="margin-top: 2%;">Log Out</button>
+<button [disabled] ="this.loginService.isAuthenticated" (click) = "goLogin()" class="col s12 m6 offset-m3 waves-effect waves-light btn" style="margin-top: 2%;">Login</button>
+<div *ngFor="let pokemon of pokemonsList$ | async" class="col s6 m4">
+  <div class="card horizontal" (click)="selectPokemon(pokemon)" pkmnBorderCard = "blue">
+    <div class="card-image">
+      <img [src]="pokemon.picture">
+    </div>
+    <div class="card-stacked">
+      <div class="card-content">
+        <p>{{ pokemon.name }}</p>
+        <p><small>{{ pokemon.created | date:"dd/MM/yyyy" }}</small></p>
+        <span *ngFor='let type of pokemon.types'
+            class='{{ type | pokemonTypeColor }}'>{{ type }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="pokemonListAction">
+      <div [hidden] = "this.loginService.isAuthenticated">
+        <p class="col s12 m6 offset-m4" style="color:orangered;"> You need to login if you want to add a pokemon</p>
+      </div>
+    <button  [disabled] ="!this.loginService.isAuthenticated" (click) = "goToAdd()" class="col s12 m6 offset-m3 waves-effect waves-light btn">Ajouter un Pokemon</button>
+  </div>
+</div>
+</div>

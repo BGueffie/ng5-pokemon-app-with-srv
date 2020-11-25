@@ -1,0 +1,111 @@
+<form (ngSubmit)="onSubmit()" #pokemonAdd = "ngForm">
+    <div class="row">
+        <div class="col s8 offset-s2">
+          <div class="card-panel">
+
+            <div class="form-group">
+                <label for="name">Nom du pokemon</label>
+                <input id="name" class="form-control" type="text"
+                    required
+                    pattern="^[a-zA-Z0-9àéèç]{1,25}$"
+                    [(ngModel)]="pokemonName"
+                    name = "name"
+                    #name = "ngModel"/>
+
+                    <div [hidden]="name.valid || name.pristine"
+                        class="card-panel red accent-1">
+                        Le nom du pokémon est requis (1-25) et ne doit pas contenir de caractères spécial.
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label for="hp">Hp du pokemon</label>
+                <input id="hp" type="number" class="form-control"
+                    required
+                    pattern="^[0-9]{1,3}$"
+                    [(ngModel)]="pokemonHp"
+                    name = "hp"
+                    #hp = "ngModel"/>
+
+                    <div [hidden]="hp.valid || hp.pristine"
+                        class="card-panel red accent-1">
+                        Les hp du pokemon doivent être entre (0-999).
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cp">Points d'attaques du pokemon</label>
+                <input id="cp" type="number" class="form-control"
+                    required
+                    pattern="^[0-9]{1,2}$"
+                    [(ngModel)]="pokemonCp"
+                    name = "cp"
+                    #cp = "ngModel"/>
+
+                    <div [hidden]="cp.valid || cp.pristine"
+                        class="card-panel red accent-1">
+                        Les points d'attaques du pokemon doivent être entre (0-99).
+                    </div>
+            </div>
+
+            <form class="form-group">
+                <label for="types">Types</label>
+                <p *ngFor="let type of types">
+                  <label>
+                    <input type="checkbox"
+                      class="filled-in"
+                      id="{{ type }}"
+                      [value]="type"
+                      [checked]="hasType(type)"
+                      [disabled]="!isTypesValid(type)"
+                      (change)="selectType($event, type)"/>
+                    <span [attr.for]="type">
+                      <div class="{{ type | pokemonTypeColor }}">
+                        {{ type }} 
+                      </div>
+                    </span>
+                  </label>
+                </p>
+              </form>
+
+              <div class="form-group">
+                <label for="link">Place dans pokedex (1-893)</label>
+                <input id="link" type="number" class="form-control"
+                    min = "1"
+                    max= "893"
+                    required
+                    [(ngModel)]="idOfPokemon"
+                    name = "link"
+                    #link = "ngModel"/>
+                    <div [hidden]="!(this.outOfPokedex())"
+                        class="card-panel red accent-1">
+                        Le nombre choisi est trop grand / petit (1-893).
+                    </div>
+                    <div class="card-panel green accent-1">
+                        Choissisez un nombre possible pour afficher le bon pokemon (Nombre max: 893). <a target = "_blank" 
+                        href="https://www.pokepedia.fr/Liste_des_Pok%C3%A9mon_dans_l%27ordre_du_Pok%C3%A9dex_National">Aide</a>
+                    </div>
+             </div>
+                <div class ="add-option">
+                    <div class="divider"></div>
+                    <div *ngIf="!(this.outOfPokedex())" class="section center">
+                        <button 
+                        type="submit"
+                        class="waves-effect waves-light btn "
+                        [disabled]="!pokemonAdd.form.valid"> Valider </button>
+                    </div>
+                    
+                    <div class="section center">
+                    <a (click)="goBack()" class="waves-effect waves-light btn">Retour</a>
+                    </div>
+                </div>
+                
+            </div>
+                
+        
+​        </div>
+    </div>
+</form>
+
+    
+    
